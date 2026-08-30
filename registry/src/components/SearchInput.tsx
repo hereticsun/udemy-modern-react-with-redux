@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Form } from "react-router-dom";
 
 export default function SearchInput() {
   const [term, setTerm] = useState('');
@@ -18,5 +18,11 @@ export default function SearchInput() {
         onChange={e => setTerm(e.target.value)}
       />
     </form>
-  )
+  );
+
+  // return (
+  //   <Form action="/search">
+  //     <input name="term" />
+  //   </Form>
+  // );
 }
