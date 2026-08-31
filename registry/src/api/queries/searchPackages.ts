@@ -13,7 +13,7 @@ interface SearchResponse {
 
 export async function searchPackages(term: string): Promise<PackageSummary[]> {
   const res = await fetch(
-    `https://registry.npmjs.org/-/v1/search?text=${term}`
+    `https://registry.npmjs.org/-/v1/search?text=${term}&size=20`
   );
   const data: SearchResponse = await res.json();
 
