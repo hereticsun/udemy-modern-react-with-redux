@@ -40,6 +40,7 @@ const usersSlice = createSlice({
     });
     builder.addCase(removeUser.fulfilled, (state, action) => {
       state.isLoading = false;
+      // FIX ME!!!
       console.log(action);
     });
     builder.addCase(removeUser.rejected, (state, action) => {
