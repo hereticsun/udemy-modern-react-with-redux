@@ -1,39 +1,49 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers, addUser } from '../store';
 import Button from './Button';
 import Skeleton from './Skeleton';
 
 function UsersList() {
-const dispatch = useDispatch();
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [loadingUsersError, setLoadingUsersError] = useState(null);
+  const dispatch = useDispatch();
 
-const {isLoading, data, error} = useSelector((state) => {
-  return state.users;
-});
+  const {data} = useSelector((state) => {
+    return state.users;
+  });
 
-useEffect(() => {
-  dispatch(fetchUsers());
-}, [dispatch]);
+  useEffect(() => {
+    setIsLoadingUsers(true);
+    dispatch(fetchUsers())
+      .unwrap()
+      .then(() => {
+        console.log('SUCCESS')
+      })
+      .catch(() => {
+        console.log('FAIL!!!!')
+      });
+  }, [dispatch]);
 
-const handleUserAdd = () => {
-  dispatch(addUser());
-};
+  const handleUserAdd = () => {
+    dispatch(addUser());
+  };
 
-if (isLoading) {
-  return <Skeleton times={6} className="h-10 w-full" />;
-}
+  if (isLoadingUsers) {
+    return <Skeleton times={6} className="h-10 w-full" />;
+  }
 
-if (error) {
-  return <div>Error fetching data...</div>;
-}
+  if (loadingUsersError) {
+    return <div>Error fetching data...</div>;
+  }
 
-const renderedUsers = data.map((user) => {
-  return <div key={user.id} className="mb-2 border rounded">
-    <div className='flex p-2 justify-between items-center cursor-pointer'>
-      {user.name}
+  const renderedUsers = data.map((user) => {
+    return <div key={user.id} className="mb-2 border rounded">
+      <div className='flex p-2 justify-between items-center cursor-pointer'>
+        {user.name}
+      </div>
     </div>
-  </div>
-});
+  });
 
   return (
     <div>
